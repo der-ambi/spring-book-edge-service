@@ -21,6 +21,7 @@ repositories {
 ext {
     set('springCloudVersion', "2023.0.3")
     set('testcontainersVersion', '1.20.1')
+    set('redisTestcontainersVersion', '2.2.2')
 }
 
 dependencies {
@@ -35,6 +36,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation "com.redis:testcontainers-redis:${redisTestcontainersVersion}"
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
