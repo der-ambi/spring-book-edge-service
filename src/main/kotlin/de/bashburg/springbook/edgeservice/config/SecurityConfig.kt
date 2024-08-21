@@ -1,6 +1,7 @@
 package de.bashburg.springbook.edgeservice.config
 
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
 import org.springframework.security.config.web.server.ServerHttpSecurity
@@ -8,8 +9,8 @@ import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcCli
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler
-import java.net.URI
 
+@Configuration
 @EnableWebFluxSecurity
 class SecurityConfig {
     @Bean
@@ -26,12 +27,15 @@ class SecurityConfig {
                     )
                 )
             }
+            .csrf { csrf ->
+                csrf.disable()
+            }
             .build()
 
     private fun oidcLogoutSuccessHandler(reactiveClientRegistrationRepository: ReactiveClientRegistrationRepository): ServerLogoutSuccessHandler {
         val oidcClientInitiatedServerLogoutSuccessHandler =
             OidcClientInitiatedServerLogoutSuccessHandler(reactiveClientRegistrationRepository)
-        oidcClientInitiatedServerLogoutSuccessHandler.setLogoutSuccessUrl(URI("{baseUrl}"))
+        oidcClientInitiatedServerLogoutSuccessHandler.setPostLogoutRedirectUri("{baseUrl}")
         return oidcClientInitiatedServerLogoutSuccessHandler
     }
 }
