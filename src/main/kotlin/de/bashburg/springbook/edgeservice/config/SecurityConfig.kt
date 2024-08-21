@@ -12,11 +12,6 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler
-import org.springframework.security.web.server.csrf.CsrfToken
-import org.springframework.web.server.ServerWebExchange
-import org.springframework.web.server.WebFilter
-import org.springframework.web.server.WebFilterChain
-import reactor.core.publisher.Mono
 
 @Configuration
 @EnableWebFluxSecurity
@@ -48,23 +43,9 @@ class SecurityConfig {
                 )
             }
             .csrf { csrf ->
-                csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+                csrf.disable()
             }
             .build()
-
-    @Bean
-    fun csrfWebFilter(): WebFilter {
-        // Required because of https://github.com/spring-projects/spring-security/issues/5766
-        return WebFilter { exchange: ServerWebExchange, chain: WebFilterChain ->
-            exchange.response.beforeCommit {
-                Mono.defer {
-                    val csrfToken = exchange.getAttribute<Mono<CsrfToken>>(CsrfToken::class.java.name)
-                    csrfToken?.then() ?: Mono.empty()
-                }
-            }
-            chain.filter(exchange)
-        }
-    }
 
     private fun oidcLogoutSuccessHandler(reactiveClientRegistrationRepository: ReactiveClientRegistrationRepository): ServerLogoutSuccessHandler {
         val oidcClientInitiatedServerLogoutSuccessHandler =
