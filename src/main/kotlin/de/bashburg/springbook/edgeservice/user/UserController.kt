@@ -15,7 +15,7 @@ class UserController {
                 username = oidcUser.preferredUsername,
                 firstName = oidcUser.givenName,
                 lastName = oidcUser.familyName,
-                listOf("employee", "customer")
+                oidcUser.getClaimAsStringList("roles")
             )
         )
 }
