@@ -97,4 +97,6 @@ resilience4j:
 
 logging:
   level:
-    io.github.resilience4j: DEBUG
+    circuitbreaker: info
+  group:
+    circuitbreaker: io.github.resilience4j, org.springframework.cloud.circuitbreaker
