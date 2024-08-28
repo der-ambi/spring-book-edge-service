@@ -22,6 +22,7 @@ ext {
     set('springCloudVersion', "2023.0.3")
     set('testcontainersVersion', '1.20.1')
     set('redisTestcontainersVersion', '2.2.2')
+    set('otelVersion', '1.33.6') //FIXME update to 2.x
 }
 
 dependencies {
@@ -36,6 +37,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation "io.opentelemetry.javaagent:opentelemetry-javaagent:${otelVersion}"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     runtimeOnly 'io.github.resilience4j:resilience4j-micrometer'
@@ -58,6 +60,7 @@ dependencyManagement {
 kotlin {
     compilerOptions {
         freeCompilerArgs.addAll '-Xjsr305=strict'
+        jvmToolchain(17)
     }
 }
 
