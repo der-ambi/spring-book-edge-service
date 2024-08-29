@@ -43,7 +43,7 @@ jobs:
           kubeconform: latest
           kubectl: latest
           command:
-            kubeconform -strict -verbose k8s
+            kustomize build k8s | kubeconform -strict -verbose -
   package:
     name: Package and Publish
     if: ${{ github.ref == 'refs/heads/master' }}

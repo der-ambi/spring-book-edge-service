@@ -35,12 +35,11 @@ spec:
               value: http://catalog-service
             - name: ORDER_SERVICE_URL
               value: http://order-service
-            - name: SPRING_DATA_REDIS_HOST
-              value: "polar-redis"
             - name: SPA_URL
               value: http://polar-ui
-            - name: SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI
-              value: http://polar-keycloak/realms/PolarBookshop
+          volumeMounts:
+            - name: edge-config-volume
+              mountPath: /workspace/config
           livenessProbe:
             httpGet:
               port: 9000
@@ -53,3 +52,7 @@ spec:
               path: /actuator/health/readiness
             initialDelaySeconds: 5
             periodSeconds: 15
+      volumes:
+        - name: edge-config-volume
+          configMap:
+            name: edge-config
